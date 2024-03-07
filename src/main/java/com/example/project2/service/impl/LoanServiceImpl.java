@@ -8,9 +8,12 @@ import com.example.project2.entity.Loans;
 import com.example.project2.entity.Members;
 import com.example.project2.repository.BookRepository;
 import com.example.project2.repository.LoanRepository;
+import com.example.project2.repository.MemberRepository;
 import com.example.project2.service.LoanService;
-import jakarta.annotation.Resource;
+
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.query.JSqlParserUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,37 +27,47 @@ import java.util.stream.Collectors;
 @Service
 public class LoanServiceImpl implements LoanService {
 
-    @Resource
+    @Autowired
     private LoanRepository loanRepository;
 
-    @Resource
+    @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private BookRepository bookRepository;
+
     @Override
-    public void barrowBook(MembersDto membersDto, BookDto bookDto) {
+    public void barrowBook(Long memberId, Long bookId) {
+        Members members = memberRepository.getMemberById(memberId);
+        Books books = bookRepository.getBookById(bookId);
 
-        Members members=modelMapper.map(membersDto,Members.class);
-        Books books=modelMapper.map(bookDto,Books.class);
+        if (books.isBorrowed()) {
+            System.out.println("Kitap zaten ödünç alınmış");
+        } else {
+            Loans loan = new Loans();
+            loan.setMembers(members);
+            loan.setBooks(books);
+            loan.setLoadDate(LocalDate.now());
 
-        Loans existingLoan = loanRepository.findByBooksAndReturnDateIsNull(books);
+            loanRepository.save(loan);
 
-        if(existingLoan==null){
-            Loans loans=new Loans();
-            loans.setMembers(members);
-            loans.setBooks(books);
-            loans.setLoadDate(LocalDate.now());
-            loanRepository.save(loans);
+            // Kitabın durumunu güncelle
+            books.setBorrowed(true);
+            bookRepository.save(books);
 
-        }else{
-            throw new IllegalArgumentException("bu kitap şu anda başka bi üye tarafından ödünç alınmış durumda");
+            System.out.println("Kitap ödünç verildi");
         }
     }
-    @Override
-        public List<LoanDto> getAllLoans() {
-        List<Loans> loansList=loanRepository.findAll();
 
-        List<LoanDto> bookDtos=loansList.stream().
-                map(loans -> modelMapper.map(loans,LoanDto.class))
+    @Override
+    public List<LoanDto> getAllLoans() {
+        List<Loans> loansList = loanRepository.findAll();
+
+        List<LoanDto> bookDtos = loansList.stream().
+                map(loans -> modelMapper.map(loans, LoanDto.class))
                 .collect(Collectors.toList());
 
         return bookDtos;
@@ -69,14 +82,16 @@ public class LoanServiceImpl implements LoanService {
 
             if (loan.getReturnDate() == null) {
                 loan.setReturnDate(LocalDate.now());
-                Long daysBetween = ChronoUnit.DAYS.between(loan.getLoadDate(), LocalDate.now()); // loan.getBorrowDate() kullanımına dikkat
+                Long daysBetween = ChronoUnit.DAYS.between(loan.getLoadDate(), LocalDate.now());
                 if (daysBetween > 15) {
                     Long debt = (daysBetween - 15) * 2;
                     System.out.println("Kitap geciktirme borcunuz " + debt + " TL");
                 } else {
                     System.out.println("Kitabı zamanında teslim ettiğiniz için teşekkür ederiz");
                 }
-                loanRepository.save(loan); // Bu satırı doğru yerde yazdık
+
+                // Tüm işlemler tamamlandıktan sonra save çağrılır
+                loanRepository.save(loan);
             } else {
                 throw new IllegalArgumentException("İade zaten yapılmış");
             }

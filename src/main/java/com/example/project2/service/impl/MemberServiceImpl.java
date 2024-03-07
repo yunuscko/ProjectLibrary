@@ -2,15 +2,13 @@ package com.example.project2.service.impl;
 
 import com.example.project2.dtos.BookDto;
 import com.example.project2.dtos.MembersDto;
-import com.example.project2.entity.Books;
 import com.example.project2.entity.Loans;
 import com.example.project2.entity.Members;
-import com.example.project2.repository.BookRepository;
 import com.example.project2.repository.LoanRepository;
 import com.example.project2.repository.MemberRepository;
 import com.example.project2.service.MemberService;
-import jakarta.annotation.Resource;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -20,13 +18,13 @@ import java.util.stream.Collectors;
 @Service
 public class MemberServiceImpl implements MemberService {
 
-    @Resource
+    @Autowired
     private MemberRepository memberRepository;
 
-    @Resource
+    @Autowired
     private ModelMapper modelMapper;
 
-    @Resource
+    @Autowired
     private LoanRepository loanRepository;
 
     @Override

@@ -3,7 +3,7 @@ package com.example.project2.controller;
 import com.example.project2.dtos.BookDto;
 import com.example.project2.dtos.MembersDto;
 import com.example.project2.service.MemberService;
-import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/members")
 public class MemberController {
 
-    @Resource
+    @Autowired
     private MemberService memberService;
 
     @PostMapping("/addMember")

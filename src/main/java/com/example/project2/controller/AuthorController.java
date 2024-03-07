@@ -2,7 +2,7 @@ package com.example.project2.controller;
 
 import com.example.project2.dtos.AuthorDto;
 import com.example.project2.service.AuthorService;
-import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/author")
 public class AuthorController {
 
-    @Resource
+    @Autowired
     private AuthorService authorService;
 
     @PostMapping("/addAuthor")
@@ -35,7 +35,8 @@ public class AuthorController {
     @GetMapping("/exists")
     public ResponseEntity<Boolean> isAuthorExist(@RequestParam String authorName){
         try {
-           Boolean isExist=authorService.isAuthorExist(authorName);
+           Boolean isExist;
+                  isExist=authorService.isAuthorExist(authorName);
             return new ResponseEntity<>(isExist,HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);

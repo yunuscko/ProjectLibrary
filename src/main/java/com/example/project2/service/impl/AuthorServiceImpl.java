@@ -7,8 +7,8 @@ import com.example.project2.entity.Books;
 import com.example.project2.repository.AuthorRepository;
 import com.example.project2.repository.BookRepository;
 import com.example.project2.service.AuthorService;
-import jakarta.annotation.Resource;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
-    @Resource
+    @Autowired
     private AuthorRepository authorRepository;
 
-    @Resource
+    @Autowired
     private ModelMapper modelMapper;
 
-    @Resource
+    @Autowired
     private BookRepository bookRepository;
 
     @Override
@@ -39,14 +39,9 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<AuthorDto> getAllAuthors() {
         List<Authors> authors=authorRepository.findAll();
-        List<AuthorDto> authorDtos=new LinkedList<>();
-        for(Authors authors1:authors){
-            AuthorDto authorDto=new AuthorDto();
-            authorDto.setAuthorsName(authors1.getAuthorsName());
-            authorDto.setAuthorsOdBooks(authors1.getAuthorsOfBooks());
-            authorDtos.add(authorDto);
-        }
-        return authorDtos;
+       return authors.stream()
+               .map(authors1 -> modelMapper.map(authors1,AuthorDto.class))
+               .collect(Collectors.toList());
     }
 
     @Override

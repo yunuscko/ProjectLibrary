@@ -19,4 +19,6 @@ public interface BookRepository extends JpaRepository<Books,Long> {
 
     Optional<Books>getBookByTitle(String bookTitle);
 
+    Books getBookById(Long bookId);
+
 }

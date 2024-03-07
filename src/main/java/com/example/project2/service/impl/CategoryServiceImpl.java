@@ -6,8 +6,8 @@ import com.example.project2.entity.Books;
 import com.example.project2.entity.Category;
 import com.example.project2.repository.CategoryRepository;
 import com.example.project2.service.CategoryService;
-import jakarta.annotation.Resource;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -17,10 +17,10 @@ import java.util.Optional;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    @Resource
+    @Autowired
     private CategoryRepository categoryRepository;
 
-    @Resource
+    @Autowired
     private ModelMapper modelMapper;
 
     @Override
@@ -30,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         for(Books books:optionalBooks){
             BookDto bookDto=new BookDto();
-            bookDto.setCategoryId(books.getCategoryId());
+            bookDto.setCategoryId(books.getCategory());
             bookDto.setId(books.getId());
             bookDto.setTitle(books.getTitle());
             bookDto.setAvailable(books.isAvailable());

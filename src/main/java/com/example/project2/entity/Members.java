@@ -1,8 +1,8 @@
 package com.example.project2.entity;
 
-import jakarta.persistence.*;
 import lombok.Data;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
@@ -13,20 +13,14 @@ public class Members {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "member_name")
     private String name;
 
     private String email;
 
-    @OneToMany
+    @OneToMany(mappedBy = "members")
     private Set<Loans> membersOfLoans;
 
     private Date registrationDate;
-
-
-
-
 }

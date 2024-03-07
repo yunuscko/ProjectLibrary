@@ -3,11 +3,12 @@ package com.example.project2.dtos;
 import com.example.project2.entity.Authors;
 import com.example.project2.entity.Books;
 import com.example.project2.entity.Category;
-import jakarta.persistence.ManyToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Data

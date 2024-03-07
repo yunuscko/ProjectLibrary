@@ -4,8 +4,8 @@ import com.example.project2.dtos.BookDto;
 import com.example.project2.entity.Books;
 import com.example.project2.repository.BookRepository;
 import com.example.project2.service.BookService;
-import jakarta.annotation.Resource;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 @Service
 public class BookServiceImpl implements BookService {
 
-    @Resource
+    @Autowired
     private BookRepository bookRepository;
 
-    @Resource
+    @Autowired
     private ModelMapper modelMapper;
 
     @Override

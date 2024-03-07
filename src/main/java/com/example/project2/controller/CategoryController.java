@@ -4,7 +4,7 @@ import com.example.project2.dtos.BookDto;
 import com.example.project2.dtos.CategoryDto;
 import com.example.project2.entity.Books;
 import com.example.project2.service.CategoryService;
-import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/category")
 public class CategoryController {
 
-    @Resource
+    @Autowired
     private CategoryService categoryService;
 
     @GetMapping("/getAllBooksByAuthor")

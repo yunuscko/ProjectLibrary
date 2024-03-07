@@ -1,11 +1,9 @@
 package com.example.project2.controller;
 
-import com.example.project2.dtos.BookDto;
 import com.example.project2.dtos.LoanDto;
-import com.example.project2.dtos.MembersDto;
 import com.example.project2.entity.Books;
 import com.example.project2.service.LoanService;
-import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +15,13 @@ import java.util.List;
 @RequestMapping("/loans")
 public class LoanController {
 
-    @Resource
+    @Autowired
     private LoanService loanService;
 
     @PostMapping("/barrowBook")
-    public ResponseEntity barrowBook(@RequestBody MembersDto membersDto, @RequestBody BookDto bookDto){
+    public ResponseEntity barrowBook(@RequestParam Long memberId,Long bookId){
         try {
-            loanService.barrowBook(membersDto,bookDto);
+            loanService.barrowBook(memberId, bookId);
             return new ResponseEntity("kitap ödünç verildi", HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
@@ -40,7 +38,7 @@ public class LoanController {
         }
     }
 
-    @PostMapping("/returnBook")
+    @PostMapping("/returnBook/{bookId}")
     public ResponseEntity returnBookById(@PathVariable Long bookId){
         try {
             loanService.returnBookById(bookId);

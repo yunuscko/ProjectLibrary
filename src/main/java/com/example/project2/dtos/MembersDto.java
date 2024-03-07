@@ -1,9 +1,9 @@
 package com.example.project2.dtos;
 
 import com.example.project2.entity.Loans;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 
+import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.Set;
 

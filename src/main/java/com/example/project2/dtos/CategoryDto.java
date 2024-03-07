@@ -1,9 +1,9 @@
 package com.example.project2.dtos;
 
 import com.example.project2.entity.Books;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 
+import javax.persistence.OneToMany;
 import java.util.Set;
 
 @Data

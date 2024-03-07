@@ -12,4 +12,6 @@ public interface LoanRepository extends JpaRepository<Loans,Long> {
     Loans findByBooksAndReturnDateIsNull(Books books);
 
     List<Loans> findByMembers_NameAndReturnDateIsNull(String memberName);
+
+
 }
