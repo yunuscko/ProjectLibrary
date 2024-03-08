@@ -90,7 +90,6 @@ public class LoanServiceImpl implements LoanService {
                     System.out.println("Kitabı zamanında teslim ettiğiniz için teşekkür ederiz");
                 }
 
-                // Tüm işlemler tamamlandıktan sonra save çağrılır
                 loanRepository.save(loan);
             } else {
                 throw new IllegalArgumentException("İade zaten yapılmış");
